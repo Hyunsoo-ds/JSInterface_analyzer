@@ -1,5 +1,5 @@
 # JSInterface_analyzer
-Analyze APK file for taint analysis about Javascript Interface using AppShark
+Analyze APK file for taint analysis targeting Javascript Interface using AppShark
 
 
 ## Used App Shark for taint analysis
