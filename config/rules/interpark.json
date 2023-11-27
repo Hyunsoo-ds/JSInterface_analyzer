@@ -1,0 +1,31 @@
+{
+  "Hyundai": {
+    "enable": true,
+    "SliceMode": true,
+    "traceDepth": 6,
+    "desc": {
+      "name": "hyundai",
+      "category": "redirection",
+      "detail": "identify user input can be lead to webview redirection",
+      "wiki": "",
+      "possibility": "2",
+      "model": "high"
+    },
+    "entry": {
+    },
+    "source": {
+      "Param": {
+        "<com.hyundai.myhyundai.common.MyhyundaiWVBridge: * postMessage(java.lang.String)>":[
+            "p0"
+        ]
+      }
+    },
+    "sink": {
+    "<*: * loadUrl*(*)>": {
+        "TaintCheck": [
+            "p*"
+        ]
+        }
+    }
+  }
+}

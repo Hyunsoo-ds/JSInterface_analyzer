@@ -1,0 +1,28 @@
+{
+  "IntentRedirectionBabyVersion": {
+    "enable": true,
+    "SliceMode": true,
+    "traceDepth": 6,
+    "desc": {
+      "name": "WebViewRedirection",
+      "category": "redirection",
+      "detail": "identify user input can be lead to webview redirection",
+      "wiki": "",
+      "possibility": "2",
+      "model": "high"
+    },
+    "entry": {},
+    "source": {
+      "Return": [
+        "<android.content.Intent: * getData*(*)>"
+      ]
+    },
+    "sink": {
+      "<*: * loadUrl*(*)>": {
+        "TaintCheck": [
+          "p*"
+        ]
+      }
+    }
+  }
+}
