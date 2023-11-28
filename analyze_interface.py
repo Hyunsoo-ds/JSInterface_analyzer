@@ -203,19 +203,25 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
     current_directory = os.getcwd()
 
     result_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'results.json')
-    vuln_list_path= os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'vuln_list.txt')
+    vuln_list_path= os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'vuln_list.json')
 
     with open(result_path, 'r') as file:
         json_data = json.load(file)
 
-    with open(vuln_list_path,'w') as f:
-        f.write(f'[APK_NAME]: {APK_NAME}\n')
-        f.write(f'[Vuln Method List]\n')
+    result_json = {
+        "APK_NAME": f"{APK_NAME}",
+        "Vulnerable_Method": {
 
-        for method in json_data['SecurityInfo']['interface_analysis']:
-            f.write(f"[Name]:{method}\n\n")
-            f.write(f"\t[Source]:{json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Source']}\n")
-            f.write(f"\t[Sink]:{json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Sink']}\n")
+        }
+    }
+    for method in json_data['SecurityInfo']['interface_analysis']:
+        result_json['Vulnerable_Method'][method] = dict()
+        result_json['Vulnerable_Method'][method]['Source'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Source']
+        result_json['Vulnerable_Method'][method]['Sink'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Sink']
+
+    with open(vuln_list_path, 'w') as json_file:
+        json.dump(result_json, json_file, indent=2) 
+
             
             
 
