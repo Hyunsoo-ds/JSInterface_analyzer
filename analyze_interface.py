@@ -6,7 +6,6 @@ import re
 import subprocess
 import shutil
 environment_constant = {'APKS_FOLDER':"apks", 'OUT_FOLDER':"out", "RULE_PATH": "rules"} # 폴더 이름 저장해 놓는 상수 딕셔너리
-
 class Node:
     total_node = 0
 
@@ -84,7 +83,7 @@ def write_template(class_name, method,APK_NAME): # 추출된 메소드들의 정
     json_data = {
         f"{method.get_name()}": {
             "enable": True,
-            "SliceMode": True,
+            "DirectMode": True,
             "traceDepth": 6,
             "desc": {
                 "name": f"{method.get_name()}",
@@ -92,7 +91,11 @@ def write_template(class_name, method,APK_NAME): # 추출된 메소드들의 정
                 "detail": "identify if it's a vulnerable Javascript interface",
                 "class_name": f"{convert_signature(class_name)}"
             },
-            "entry": {},
+            "entry": {
+                "methods": [
+                    f"<{convert_signature(class_name)}: {return_type} {method.get_name()}(*)>"
+                ]
+            },
             "source": {
                 "Param": {
                     f"<{convert_signature(class_name)}: {return_type} {method.get_name()}(*)>": [
@@ -221,6 +224,7 @@ def main():
     apk_files_path = os.path.join(current_directory,environment_constant['APKS_FOLDER'])
 
     apk_files = [f for f in os.listdir(apk_files_path) if f.endswith(".apk")]
+    print(apk_files)
 
     for APK_NAME in apk_files:
         APK_NAME = APK_NAME[:-4] # '.apk' 제거
@@ -234,4 +238,5 @@ def main():
 
 
 if __name__ == "__main__":
+    
     main()
