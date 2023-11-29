@@ -303,8 +303,11 @@ def main():
         APK_NAME = APK_NAME[:-4] # '.apk' 제거
 
         decompiled_java_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'java')
-
-        analyze_apk(APK_NAME)
+        try:
+            analyze_apk(APK_NAME)
+        except:
+            print('Error occured while analyzing APK')
+            print('APK: ', APK_NAME)
         make_result(APK_NAME)
 
         shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
