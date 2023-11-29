@@ -18,6 +18,11 @@ class Node:
         if method not in self.methods:
             self.methods.append(method)
 
+class AppSharkError(Exception):
+    def __init__(self, message="[*] AppShark can't analyze this apk"):
+        self.message = message
+        super().__init__(self.message)
+
 
 def extract_jsinterface(APK_NAME): # apk에서 @javascriptinterface annotation이 붙은 메소드 객체들을 추출함
     androguard_apk_obj, androguard_d_array,androguard_dx = AnalyzeAPK(environment_constant['APKS_FOLDER']+'/'+APK_NAME + '.apk', session = None)
@@ -254,6 +259,9 @@ def make_structure(APK_NAME): # 앱마다 분석을 위해 폴더들을 미리�
 
 def analyze_apk(TEMP_APK): # APK 마다 method들을 추출하여 AppShark 실행
 
+    current_directory = os.getcwd()
+    result_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],TEMP_APK,'results.json')
+
     make_structure(TEMP_APK)
     
     extracted_JSinterface = extract_jsinterface(TEMP_APK)
@@ -263,6 +271,10 @@ def analyze_apk(TEMP_APK): # APK 마다 method들을 추출하여 AppShark 실�
 
     run_appshark(config_file_path)
 
+    if not os.path.exists(result_path):
+        raise AppSharkError()
+
+
 
 
 def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으로 간단하게 취약한 인터페이스 메소드만 정리함
@@ -270,7 +282,7 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
 
     result_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'results.json')
     vuln_list_path= os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'vuln_list.json')
-
+    
     with open(result_path, 'r') as file:
         json_data = json.load(file)
 
@@ -288,6 +300,8 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
 
         with open(vuln_list_path, 'w') as json_file:
             json.dump(result_json, json_file, indent=2) 
+
+    return True
 
 def check_list_error(analyzed_list_path, error_list_path):
 
@@ -343,7 +357,7 @@ def main():
             with open(error_list_path,'a')as f:
                 f.write(f'{APK_NAME}\n')
             continue
-
+        
         make_result(APK_NAME)
 
         with open(analyzed_list_path,'a')as f:
