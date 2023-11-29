@@ -5,7 +5,7 @@ import json
 import re
 import subprocess
 import shutil
-environment_constant = {'APKS_FOLDER':"apks", 'OUT_FOLDER':"out", "RULE_PATH": "rules"} # 폴더 이름 저장해 놓는 상수 딕셔너리
+environment_constant = {'APKS_FOLDER':"apks", 'OUT_FOLDER':"out", "RULE_PATH": "rules", 'LIST_PATH':'list.txt','ERROR_PATH':'error.txt'} # 폴더 이름 저장해 놓는 상수 딕셔너리
 class Node:
     total_node = 0
 
@@ -289,12 +289,36 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
         with open(vuln_list_path, 'w') as json_file:
             json.dump(result_json, json_file, indent=2) 
 
+def check_list_error(analyzed_list_path, error_list_path):
+
+    if not os.path.exists(analyzed_list_path):
+        with open(analyzed_list_path, 'w'):
+            pass
+        print(f"[*]'{environment_constant['LIST_PATH']}' 파일이 생성되었습니다.")
+    
+    if not os.path.exists(error_list_path):
+        with open(error_list_path, 'w'):
+            pass
+        print(f"[*]'{environment_constant['ERROR_PATH']}' 파일이 생성되었습니다.")
+
+    with open(analyzed_list_path,'r')as f:
+        analyzed_list = f.read()
+
+    with open(error_list_path,'r')as f:
+        error_list = f.read()
+
+    return analyzed_list, error_list
+
             
             
 
 def main():
     current_directory = os.getcwd()
     apk_files_path = os.path.join(current_directory,environment_constant['APKS_FOLDER'])
+    analyzed_list_path = os.path.join(current_directory, environment_constant["LIST_PATH"])
+    error_list_path = os.path.join(current_directory, environment_constant["ERROR_PATH"])
+
+    analyzed_list, error_list = check_list_error(analyzed_list_path, error_list_path)
 
     apk_files = [f for f in os.listdir(apk_files_path) if f.endswith(".apk")]
     print(apk_files)
@@ -302,13 +326,28 @@ def main():
     for APK_NAME in apk_files:
         APK_NAME = APK_NAME[:-4] # '.apk' 제거
 
+        if(APK_NAME in analyzed_list ):
+            print(f'[*]{APK_NAME} already analyzed')
+            continue
+        elif(APK_NAME in error_list):
+            print(f'[*]{APK_NAME} had error while analyzing.')
+            continue
+
         decompiled_java_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'java')
         try:
             analyze_apk(APK_NAME)
         except:
             print('Error occured while analyzing APK')
             print('APK: ', APK_NAME)
+
+            with open(error_list_path,'a')as f:
+                f.write(f'{APK_NAME}\n')
+            continue
+
         make_result(APK_NAME)
+
+        with open(analyzed_list_path,'a')as f:
+            f.write(f'{APK_NAME}\n')
 
         shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
 
