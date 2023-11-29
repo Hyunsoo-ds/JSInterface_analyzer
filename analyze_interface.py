@@ -280,13 +280,14 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
 
         }
     }
-    for method in json_data['SecurityInfo']['interface_analysis']:
-        result_json['Vulnerable_Method'][method] = dict()
-        result_json['Vulnerable_Method'][method]['Source'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Source']
-        result_json['Vulnerable_Method'][method]['Sink'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Sink']
+    if 'SecurityInfo' in json_data.keys():
+        for method in json_data['SecurityInfo']['interface_analysis']:
+            result_json['Vulnerable_Method'][method] = dict()
+            result_json['Vulnerable_Method'][method]['Source'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Source']
+            result_json['Vulnerable_Method'][method]['Sink'] = json_data['SecurityInfo']['interface_analysis'][method]['vulners'][0]['details']['Sink']
 
-    with open(vuln_list_path, 'w') as json_file:
-        json.dump(result_json, json_file, indent=2) 
+        with open(vuln_list_path, 'w') as json_file:
+            json.dump(result_json, json_file, indent=2) 
 
             
             
