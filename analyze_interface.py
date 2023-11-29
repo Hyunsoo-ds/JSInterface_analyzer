@@ -101,17 +101,83 @@ def write_template(class_name, method,APK_NAME): # 추출된 메소드들의 정
                     f"<{convert_signature(class_name)}: {return_type} {method.get_name()}(*)>": [
                         "p*"
                     ]
-                }
+                },
+                "Return":[ "<android.content.SharedPreferences: * getAll*(*)>",
+                          "<android.webkit.CookieManager: * getInstance(*)>","<android.webkit.CookieManager: * getCookie(*)>",
+                          "<android.location.LocationManager: * getLastKnownLocation(*)>","<android.os.Environment: * getExternalFilesDir(*)>",
+                          "<android.database.Cursor: * getColumnIndex*(*)>","<android.graphics.BitmapFactory: * decodeFile*(*)>"
+                ]
             },
             "sink": {
-                "<*: * loadUrl*(*)>": {
+                "<android.content.SharedPreferences: * getString*(*)>": {
+                    "TaintCheck": [
+                        "p0"
+                    ]
+                },
+                "<android.content.SharedPreferences.Editor: * putString*(*)>": {
                     "TaintCheck": [
                         "p*"
                     ]
                 },
-                "<*: * makeText*(*)>": {
+                
+                "<android.webkit.WebView: * loadUrl*(*)>": {
                     "TaintCheck": [
                         "p*"
+                    ]
+                },
+                "<android.webkit.WebView: * loadData*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.webkit.WebView: * postUrl*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.webkit.CookieManager: * getCookie(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.webkit.CookieManager: * setCookie(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.content.Intent: * setData*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<*: * openFile*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.os.Environment: * getExternalFilesDir(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.app.Activity: * startActivity*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.database.Cursor: * getColumnIndex*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
+                "<android.graphics.BitmapFactory: * decodeFile*(*)>": {
+                    "TaintCheck": [
+                        "p0"
+                    ]
+                },
+                f"<{convert_signature(class_name)}: {return_type} {method.get_name()}(*)>": {
+                    "Taintcheck":[
+                        "return"
                     ]
                 }
             }
@@ -155,7 +221,7 @@ def create_json_config(APK_NAME): # AppShark 툴이 작동하기 위해 rule과 
 
     print(f'[*] {json_file_path} 생성')
     with open(json_file_path, 'w') as json_file:    
-        json.dump(json_content, json_file, indent=2)
+        json.dump(json_content, json_file, indent=2)    
 
     return json_file_path
 
@@ -244,5 +310,4 @@ def main():
 
 
 if __name__ == "__main__":
-    
     main()
