@@ -5,6 +5,7 @@ import json
 import re
 import subprocess
 import shutil
+import time
 environment_constant = {'APKS_FOLDER':"apks", 'OUT_FOLDER':"out", "RULE_PATH": "rules", 'LIST_PATH':'list.txt','ERROR_PATH':'error.txt'} # 폴더 이름 저장해 놓는 상수 딕셔너리
 class Node:
     total_node = 0
@@ -271,7 +272,7 @@ def analyze_apk(TEMP_APK): # APK 마다 method들을 추출하여 AppShark 실�
 
     run_appshark(config_file_path)
 
-    if not os.path.exists(result_path):
+    if not os.path.exists(result_path): 
         raise AppSharkError()
 
 
@@ -356,6 +357,10 @@ def main():
 
             with open(error_list_path,'a')as f:
                 f.write(f'{APK_NAME}\n')
+            
+            analysis_folder_path = os.path.join(current_directory,environment_constant["OUT_FOLDER"],APK_NAME)
+            if os.path.exists(analysis_folder_path):
+                shutil.rmtree(analysis_folder_path)
             continue
         
         make_result(APK_NAME)
@@ -364,6 +369,8 @@ def main():
             f.write(f'{APK_NAME}\n')
 
         shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
+
+        time.sleep(1)
 
 
 if __name__ == "__main__":
