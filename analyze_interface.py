@@ -120,7 +120,7 @@ def write_template(class_name, method,APK_NAME): # 추출된 메소드들의 정
                         "p0"
                     ]
                 },
-                "<android.content.SharedPreferences.Editor: * putString*(*)>": {
+                "<*: * putString*(*)>": {
                     "TaintCheck": [
                         "p*"
                     ]
