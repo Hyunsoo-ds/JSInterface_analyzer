@@ -181,6 +181,11 @@ def write_template(class_name, method,APK_NAME): # 추출된 메소드들의 정
                         "p0"
                     ]
                 },
+                "<*: * evaluateJavascript*(*)>": {
+                    "TaintCheck": [
+                        "p*"
+                    ]
+                },
                 f"<{convert_signature(class_name)}: {return_type} {method.get_name()}(*)>": {
                     "Taintcheck":[
                         "return"
