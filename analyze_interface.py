@@ -370,7 +370,7 @@ def main():
 
         shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
 
-        time.sleep(1)
+        gc.collect()
 
 
 if __name__ == "__main__":
