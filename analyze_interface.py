@@ -372,8 +372,8 @@ def main():
 
         with open(analyzed_list_path,'a')as f:
             f.write(f'{APK_NAME}\n')
-
-        shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
+        if os.path.exists(decompiled_java_path):
+            shutil.rmtree(decompiled_java_path) # 디컴파일 된 자바 코드 삭제(용량 확보)
 
         gc.collect()
 
