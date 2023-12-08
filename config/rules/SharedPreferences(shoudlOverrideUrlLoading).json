@@ -1,0 +1,34 @@
+{
+    "SharedPreferences(shoudlOverrideUrlLoading)": {
+      "enable": true,
+      "SliceMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "SharedPreferences(shoudlOverrideUrlLoading)",
+        "category": "redirection",
+        "detail": "identify user input can be lead to webview redirection",
+        "wiki": "",
+        "possibility": "2",
+        "model": "high"
+      },
+      "source": {
+        "Param": {
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
+                "p1"
+            ]
+        } 
+      },
+      "sink": {
+        "<android.content.SharedPreferences: * getString*(*)>": {
+            "TaintCheck": [
+                "p0"
+            ]
+          },
+          "<android.content.SharedPreferences: * putString*(*)>": {
+              "TaintCheck": [
+                  "p*"
+              ]
+          }
+      }
+    }   
+  }

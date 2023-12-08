@@ -1,0 +1,34 @@
+{
+    "sCookie(shoudlOverrideUrlLoading)": {
+      "enable": true,
+      "SliceMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "Cookie(shoudlOverrideUrlLoading)",
+        "category": "redirection",
+        "detail": "identify user input can be lead to webview redirection",
+        "wiki": "",
+        "possibility": "2",
+        "model": "high"
+      },
+      "source": {
+        "Param": {
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
+                "p1"
+            ]
+        } 
+      },
+      "sink": {
+        "<android.webkit.CookieManager: * getCookie(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<android.webkit.CookieManager: * setCookie(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        }
+      }
+    }   
+  }

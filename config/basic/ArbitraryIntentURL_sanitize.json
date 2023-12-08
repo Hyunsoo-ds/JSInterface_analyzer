@@ -1,0 +1,31 @@
+{
+    "ArbitraryIntentURL": {
+      "enable": true,
+      "DirectMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "ArbitraryIntentURL_sanitize",
+        "category": "Start arbitrary activity",
+        "detail": "User input Intent URL can be parsed to intent, so arbitrary activity can be started."
+      },
+      "entry": {
+        "methods": [
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>"
+        ]
+      },    
+      "source": {
+        
+        "Return": [
+            "<android.content.Intent: * parseUri(*)>"
+        ]
+    },
+      "sink": {
+        "<*: * startActivity*(android.content.Intent)>": {
+          "TaintCheck": [
+            "p*"
+          ]
+        }
+      }
+      
+    }
+}

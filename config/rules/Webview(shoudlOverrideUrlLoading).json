@@ -1,0 +1,44 @@
+{
+    "Webview(shoudlOverrideUrlLoading)": {
+      "enable": true,
+      "SliceMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "Webview(shoudlOverrideUrlLoading)",
+        "category": "redirection",
+        "detail": "identify user input can be lead to webview redirection",
+        "wiki": "",
+        "possibility": "2",
+        "model": "high"
+      },
+      "source": {
+        "Param": {
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
+                "p1"
+            ]
+        } 
+      },
+      "sink": {
+        "<android.webkit.WebView: * loadUrl*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<android.webkit.WebView: * loadData*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<android.webkit.WebView: * postUrl*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<*: * evaluateJavascript*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        }
+      }
+    }   
+  }

@@ -1,0 +1,54 @@
+{
+    "System(shoudlOverrideUrlLoading)": {
+      "enable": true,
+      "SliceMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "System(shoudlOverrideUrlLoading)",
+        "category": "redirection",
+        "detail": "identify user input can be lead to webview redirection",
+        "wiki": "",
+        "possibility": "2",
+        "model": "high"
+      },
+      "source": {
+        "Param": {
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
+                "p1"
+            ]
+        } 
+      },
+      "sink": {
+        "<*: * openFile*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<android.os.Environment: * getExternalFilesDir(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        }
+        },
+        "<android.database.Cursor: * getColumnIndex*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        },
+        "<android.graphics.BitmapFactory: * decodeFile*(*)>": {
+            "TaintCheck": [
+                "p0"
+            ]
+        },
+        "<java.io.FileWriter: * <init>(*)>": {
+          "TaintCheck": [
+            "p*"
+          ]
+        },
+        "<java.io.FileOutputStream: * <init>(*)>": {
+          "TaintCheck": [
+            "p*"
+          ]
+        }
+      }
+  }

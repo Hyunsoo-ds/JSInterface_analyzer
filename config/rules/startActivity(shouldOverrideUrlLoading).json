@@ -1,0 +1,29 @@
+{
+    "startActivity(shouldOverrideUrlLoading)": {
+      "enable": true,
+      "SliceMode": true,
+      "traceDepth": 6,
+      "desc": {
+        "name": "startActivity(shouldOverrideUrlLoading)",
+        "category": "redirection",
+        "detail": "identify user input can be lead to webview redirection",
+        "wiki": "",
+        "possibility": "2",
+        "model": "high"
+      },
+      "source": {
+        "Param": {
+            "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
+                "p1"
+            ]
+        } 
+      },
+      "sink": {
+        "<android.app.Activity: * startActivity*(*)>": {
+            "TaintCheck": [
+                "p*"
+            ]
+        }
+      }
+    }   
+  }
