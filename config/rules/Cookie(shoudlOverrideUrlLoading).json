@@ -19,12 +19,12 @@
         } 
       },
       "sink": {
-        "<android.webkit.CookieManager: * getCookie(*)>": {
+        "<*: * getCookie(*)>": {
             "TaintCheck": [
                 "p*"
             ]
         },
-        "<android.webkit.CookieManager: * setCookie(*)>": {
+        "<*: * setCookie(*)>": {
             "TaintCheck": [
                 "p*"
             ]

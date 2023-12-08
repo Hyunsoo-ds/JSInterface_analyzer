@@ -19,17 +19,17 @@
         } 
       },
       "sink": {
-        "<android.webkit.WebView: * loadUrl*(*)>": {
+        "<*: * loadUrl*(*)>": {
             "TaintCheck": [
                 "p*"
             ]
         },
-        "<android.webkit.WebView: * loadData*(*)>": {
+        "<*: * loadData*(*)>": {
             "TaintCheck": [
                 "p*"
             ]
         },
-        "<android.webkit.WebView: * postUrl*(*)>": {
+        "<*: * postUrl*(*)>": {
             "TaintCheck": [
                 "p*"
             ]

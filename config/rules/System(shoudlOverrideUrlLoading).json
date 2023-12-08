@@ -24,7 +24,7 @@
                 "p*"
             ]
         },
-        "<android.os.Environment: * getExternalFilesDir(*)>": {
+        "<*: * getExternalFilesDir(*)>": {
             "TaintCheck": [
                 "p*"
             ]
