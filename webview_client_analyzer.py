@@ -6,7 +6,7 @@ import re
 import subprocess
 import shutil
 import time
-environment_constant = {'APKS_FOLDER':"apks", 'OUT_FOLDER':"out_webviewClient", "RULE_PATH": "rules", 'LIST_PATH':'list.txt','ERROR_PATH':'error.txt'} # 폴더 이름 저장해 놓는 상수 딕셔너리
+environment_constant = {'APKS_FOLDER':"popular", 'OUT_FOLDER':"out_webviewClient", "RULE_PATH": "rules", 'LIST_PATH':'list.txt','ERROR_PATH':'error.txt'} # 폴더 이름 저장해 놓는 상수 딕셔너리
 class Node:
     total_node = 0
 
@@ -97,6 +97,11 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
 
     result_path = os.path.join(current_directory,environment_constant['OUT_FOLDER'],APK_NAME,'results.json')
     vuln_list_path= os.path.join(current_directory,'vuln_list.json')
+
+    if not os.path.exists(vuln_list_path):
+        with open(vuln_list_path, 'w'):
+            pass
+        print(f"[*]'{vuln_list_path}' 파일이 생성되었습니다.")
 
     with open(vuln_list_path, 'r') as file:
         try:
