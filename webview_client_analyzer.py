@@ -129,6 +129,7 @@ def make_result(APK_NAME): # AppShark를 실행시켜 나온 결과를 기반으
                 result_json[APK_NAME][temp_theme] = dict()
                 result_json[APK_NAME][temp_theme]['Sink'] = details['details']['Sink']
                 result_json[APK_NAME][temp_theme]['Source'] = details['details']['Source']
+                result_json[APK_NAME][temp_theme]['Url'] = details['details']['url']
                 idx +=1
 
         existing_data.update(result_json)
