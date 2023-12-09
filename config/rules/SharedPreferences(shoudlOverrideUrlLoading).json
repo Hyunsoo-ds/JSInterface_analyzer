@@ -15,6 +15,12 @@
         "Param": {
             "<android.webkit.WebViewClient: * shouldOverrideUrlLoading(*)>": [
                 "p1"
+            ],
+            "<android.webkit.WebViewClient: * onPageFinished(*)>": [
+                "p1"
+            ],
+            "<android.webkit.WebViewClient: * onPageStarted(*)>": [
+              "p1"
             ]
         } 
       },
